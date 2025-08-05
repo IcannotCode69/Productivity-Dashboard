@@ -2,38 +2,30 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./index.html",            // your HTML entry
-    "./src/**/*.{js,jsx,ts,tsx}" // all React files
+    "./index.html",           
+    "./src/**/*.{js,jsx,ts,tsx}" 
   ],
   theme: {
     extend: {
+      colors: {
+        primary: "#6B46C1",
+        mutedBg: "#F7F5FF",
+        text: "#1A202C",
+        subtext: "#4A5568",
+      },
       fontFamily: {
         sans: [
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
           "Roboto",
-          "Oxygen",
-          "Ubuntu",
-          "Cantarell",
-          "Fira Sans",
-          "Droid Sans",
           "Helvetica Neue",
-          "sans-serif"
+          "sans-serif",
         ],
       },
-      colors: {
-        background: "#F5F5F7",
-        card: "#FFFFFF",
-        accent: "#0071E3",
-        text: {
-          DEFAULT: "#1D1D1F",
-          muted: "#6E6E73"
-        }
-      },
       boxShadow: {
-        card: "0 4px 14px rgba(0,0,0,0.1)"
-      }
+        card: "0 2px 12px rgba(0,0,0,0.05)",
+      },
     },
   },
   plugins: [],
