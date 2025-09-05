@@ -16,7 +16,7 @@ function getInitialClasses() {
         return {
           ...cls,
           chapters: [
-            { id: Date.now() + Math.random(), name: "Chapter 1", notes: cls.notes || "" }
+            { id: crypto.randomUUID(), name: "Chapter 1", notes: cls.notes || "" }
           ]
         };
       }
@@ -24,10 +24,10 @@ function getInitialClasses() {
   }
   return [
     { 
-      id: Date.now(), 
+      id: crypto.randomUUID(), 
       name: "General", 
       chapters: [
-        { id: Date.now() + 1, name: "Chapter 1", notes: "" }
+        { id: crypto.randomUUID(), name: "Chapter 1", notes: "" }
       ]
     }
   ];
@@ -37,12 +37,12 @@ export default function NotesPage() {
   const [classes, setClasses] = useState(getInitialClasses);
   const [activeId, setActiveId] = useState(() => {
     const initialClasses = getInitialClasses();
-    return initialClasses[0]?.id || Date.now();
+    return initialClasses[0]?.id || crypto.randomUUID();
   });
   const [activeChapterId, setActiveChapterId] = useState(() => {
     const initialClasses = getInitialClasses();
     const firstClass = initialClasses[0];
-    return firstClass?.chapters?.[0]?.id || Date.now() + 1;
+    return firstClass?.chapters?.[0]?.id || crypto.randomUUID();
   });
   const [renamingId, setRenamingId] = useState(null);
   const [newClassName, setNewClassName] = useState("");
@@ -55,10 +55,10 @@ export default function NotesPage() {
   function addClass() {
     if (!newClassName.trim()) return;
     const newClass = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       name: newClassName.trim(),
       chapters: [
-        { id: Date.now() + 1, name: "Chapter 1", notes: "" }
+        { id: crypto.randomUUID(), name: "Chapter 1", notes: "" }
       ]
     };
     setClasses([...classes, newClass]);
@@ -87,7 +87,7 @@ export default function NotesPage() {
   function addChapter() {
     if (!newChapterName.trim()) return;
     const newChapter = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       name: newChapterName.trim(),
       notes: ""
     };
