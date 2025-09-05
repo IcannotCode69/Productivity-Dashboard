@@ -1,61 +1,82 @@
 import React, { useState } from "react";
-import Calendar from "react-calendar";
-import 'react-calendar/dist/Calendar.css';
+
+const DEFAULT_CALENDAR = "https://calendar.google.com/calendar/embed?src=en.indian%23holiday%40group.v.calendar.google.com&ctz=America%2FChicago&bgcolor=%23000000&color=%230B8043&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=1&showTz=0&mode=WEEK&height=600&hl=en&wkst=1&theme=dark&dark=1";
 
 export default function CalendarPage() {
-  const [value, setValue] = useState(new Date());
+  const [showInput, setShowInput] = useState(false);
+  const [input, setInput] = useState("");
+  const [calendarSrc, setCalendarSrc] = useState(() => {
+    return localStorage.getItem("calendar-embed-link") || DEFAULT_CALENDAR;
+  });
+  const [iframeKey, setIframeKey] = useState(() => {
+    return localStorage.getItem("calendar-iframe-key") || Date.now();
+  });
+
+  function handleSwitch() {
+    if (input.trim()) {
+      // Convert email to Google Calendar embed URL
+      const email = input.trim();
+      const calendarUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(email)}&ctz=America%2FChicago&bgcolor=%23000000&color=%230B8043&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=1&showTz=0&mode=WEEK&height=600&hl=en&wkst=1&theme=dark&dark=1`;
+      setCalendarSrc(calendarUrl);
+      localStorage.setItem("calendar-embed-link", calendarUrl);
+      // Generate new key to force iframe reload with new calendar
+      const newKey = Date.now();
+      setIframeKey(newKey);
+      localStorage.setItem("calendar-iframe-key", newKey);
+      setShowInput(false);
+      setInput("");
+    }
+  }
+
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       <div className="bg-gradient-to-br from-[#232a36]/90 to-[#1a1f2b]/90 backdrop-blur-md rounded-3xl shadow-xl p-8 border border-[#2d3440]">
-        <h2 className="text-2xl font-semibold text-blue-200 mb-6 tracking-tight">Calendar</h2>
-        <Calendar
-          onChange={setValue}
-          value={value}
-          className="dark-calendar"
-        />
-        <style>{`
-          .dark-calendar {
-            background: transparent;
-            color: #cbd5e1;
-            border-radius: 1.5rem;
-            border: none;
-            box-shadow: none;
-            width: 100%;
-            padding: 0.5rem 0;
-          }
-          .dark-calendar abbr {
-            color: #e0e7ef;
-          }
-          .dark-calendar .react-calendar__tile {
-            background: none;
-            color: #cbd5e1;
-            border-radius: 0.75rem;
-            transition: background 0.2s, color 0.2s;
-          }
-          .dark-calendar .react-calendar__tile--active,
-          .dark-calendar .react-calendar__tile--now {
-            background: #2563eb;
-            color: #fff;
-          }
-          .dark-calendar .react-calendar__tile--hasActive {
-            background: #334155;
-          }
-          .dark-calendar .react-calendar__tile:enabled:hover {
-            background: #334155;
-            color: #fff;
-          }
-          .dark-calendar .react-calendar__navigation {
-            background: none;
-            color: #60a5fa;
-          }
-          .dark-calendar .react-calendar__navigation button {
-            color: #60a5fa;
-            background: none;
-          }
-          .dark-calendar .react-calendar__month-view__weekdays {
-            color: #60a5fa;
-          }
-        `}</style>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold text-blue-200 tracking-tight">Google Calendar</h2>
+          <button
+            className="px-4 py-2 rounded-lg bg-blue-700/60 text-blue-100 hover:bg-blue-600/80 transition text-sm font-medium border border-blue-500/30"
+            onClick={() => setShowInput(v => !v)}
+          >
+            Switch Account
+          </button>
+        </div>
+        
+        {showInput && (
+          <div className="mb-6 flex gap-3 items-center animate-fadein">
+            <input
+              className="flex-1 px-4 py-3 rounded-lg border border-blue-500 bg-[#232a36] text-blue-100 placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your Google account email (e.g., your-email@gmail.com)..."
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              autoFocus
+              onKeyDown={e => { if (e.key === 'Enter') handleSwitch(); if (e.key === 'Escape') setShowInput(false); }}
+            />
+            <button
+              className="px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition font-semibold"
+              onClick={handleSwitch}
+            >
+              Connect
+            </button>
+          </div>
+        )}
+        
+        <div className="rounded-2xl overflow-hidden bg-gray-900 border border-gray-700">
+          <iframe
+            key={iframeKey}
+            src={calendarSrc}
+            style={{ 
+              border: 0,
+              filter: 'invert(0.9) hue-rotate(180deg)',
+              backgroundColor: '#000000'
+            }}
+            width="100%"
+            height="700"
+            frameBorder="0"
+            scrolling="no"
+            className="w-full"
+            title="Google Calendar"
+          ></iframe>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 
-const DEFAULT_CALENDAR = "https://calendar.google.com/calendar/embed?src=en.indian%23holiday%40group.v.calendar.google.com&ctz=Asia%2FKolkata&bgcolor=%23232a36";
+const DEFAULT_CALENDAR = "https://calendar.google.com/calendar/embed?src=en.indian%23holiday%40group.v.calendar.google.com&ctz=America%2FChicago&bgcolor=%23000000&color=%230B8043&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=1&showTz=0&mode=WEEK&height=600";
 
 export default function CalendarCard() {
   const [showInput, setShowInput] = useState(false);
@@ -11,8 +11,11 @@ export default function CalendarCard() {
 
   function handleSwitch() {
     if (input.trim()) {
-      setCalendarSrc(input.trim());
-      localStorage.setItem("calendar-embed-link", input.trim());
+      // Convert email to Google Calendar embed URL
+      const email = input.trim();
+      const calendarUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(email)}&ctz=America%2FChicago&bgcolor=%23000000&color=%230B8043&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=1&showTz=0&mode=WEEK&height=600`;
+      setCalendarSrc(calendarUrl);
+      localStorage.setItem("calendar-embed-link", calendarUrl);
       setShowInput(false);
       setInput("");
     }
@@ -58,14 +61,14 @@ export default function CalendarCard() {
           className="ml-2 px-3 py-1 rounded-lg bg-blue-700/60 text-blue-100 hover:bg-blue-600/80 transition text-sm font-medium border border-blue-500/30"
           onClick={() => setShowInput(v => !v)}
         >
-          Switch Calendar
+          Switch Account
         </button>
       </div>
       {showInput && (
         <div className="mb-4 flex gap-2 items-center animate-fadein">
           <input
             className="flex-1 px-3 py-2 rounded-lg border border-blue-500 bg-[#232a36] text-blue-100 placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Paste Google Calendar embed link..."
+            placeholder="Enter your Google account email (e.g., your-email@gmail.com)..."
             value={input}
             onChange={e => setInput(e.target.value)}
             autoFocus
@@ -75,7 +78,7 @@ export default function CalendarCard() {
             className="px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition font-semibold"
             onClick={handleSwitch}
           >
-            Set
+            Connect
           </button>
         </div>
       )}
