@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import NoteApp from "../NoteApp";
 
+// Notes data is structured as an array of classes, each with chapters.
+// This page manages the structure and persistence; NoteApp renders the UI for the notes list.
 const STORAGE_KEY = "class-notes";
 
 function getInitialClasses() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {
     const parsed = JSON.parse(saved);
-    // Migrate old data structure to new structure with chapters
+    // Migrate old data structure (single notes field) to the new chapters-based structure
     return parsed.map(cls => {
       if (cls.chapters) {
         return cls; // Already has chapters structure
@@ -22,6 +24,7 @@ function getInitialClasses() {
       }
     });
   }
+  // First-time default: one class with one chapter
   return [
     { 
       id: crypto.randomUUID(), 
@@ -48,10 +51,12 @@ export default function NotesPage() {
   const [newClassName, setNewClassName] = useState("");
   const [newChapterName, setNewChapterName] = useState("");
 
+  // Persist notes whenever classes change
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(classes));
   }, [classes]);
 
+  // Class operations
   function addClass() {
     if (!newClassName.trim()) return;
     const newClass = {
@@ -84,6 +89,7 @@ export default function NotesPage() {
     }
   }
 
+  // Chapter operations
   function addChapter() {
     if (!newChapterName.trim()) return;
     const newChapter = {
@@ -116,6 +122,7 @@ export default function NotesPage() {
     }
   }
 
+  // Update the text for the active chapter
   function setNotesForActiveChapter(notes) {
     setClasses(classes.map(cls =>
       cls.id === activeId 
@@ -288,6 +295,7 @@ export default function NotesPage() {
 }
 
 // --- AI Question Box ---
+// Simple mock that echoes back part of your notes. Replace with real API calls later.
 function AskNotesAI({ notes }) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");

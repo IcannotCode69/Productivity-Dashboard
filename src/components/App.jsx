@@ -1,3 +1,13 @@
+/*
+  App sets up the router and maps routes to page components.
+  Structure:
+  - AppShell provides a persistent layout (sidebar + header)
+  - Nested routes render inside <Outlet /> of AppShell
+  How to add a new page:
+  - Create a component in src/components/pages/MyPage.jsx
+  - Add a <Route path="my-page" element={<MyPage />} /> below
+  - Add an entry in navItems in AppShell.jsx for navigation
+*/
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppShell from "./AppShell";

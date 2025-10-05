@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
+// Simple chat UI with a mock AI response. Replace the placeholder
+// with your API call when integrating a real assistant.
 export default function AIAssistantPage() {
   const [messages, setMessages] = useState([
     { from: "ai", text: "Hi! I'm your AI assistant. How can I help you today?" }
@@ -7,6 +9,7 @@ export default function AIAssistantPage() {
   const [input, setInput] = useState("");
   const chatEndRef = useRef(null);
 
+  // Auto-scroll to the latest message
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);

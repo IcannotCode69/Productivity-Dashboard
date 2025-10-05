@@ -1,3 +1,5 @@
+// Simple static recommendations list. Replace with dynamic data or AI-backed
+// suggestions in the future.
 export default function RecommendationsPage() {
   return (
     <div className="max-w-2xl mx-auto">

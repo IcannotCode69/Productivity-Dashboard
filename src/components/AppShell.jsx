@@ -1,7 +1,11 @@
 import React from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { HomeIcon, CalendarIcon, DocumentTextIcon, CheckCircleIcon, SparklesIcon, LightBulbIcon, Cog6ToothIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
+// Route metadata for the sidebar. Each item defines:
+// - to: URL path
+// - label: human-friendly name
+// - icon: Heroicon element rendered in the nav
 const navItems = [
   { to: "/", label: "Home", icon: <HomeIcon className="w-6 h-6" /> },
   { to: "/calendar", label: "Calendar", icon: <CalendarIcon className="w-6 h-6" /> },
@@ -12,6 +16,8 @@ const navItems = [
   { to: "/settings", label: "Settings", icon: <Cog6ToothIcon className="w-6 h-6" /> },
 ];
 
+// AppShell provides the persistent layout (sidebar + header) and renders
+// the active page via <Outlet /> from React Router.
 export default function AppShell() {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-[#181c24] to-[#232a36] font-sans text-text">
@@ -39,7 +45,7 @@ export default function AppShell() {
       <div className="flex-1 flex flex-col h-full min-w-0">
         {/* Header */}
         <header className="flex items-center justify-between bg-[#232a36]/80 backdrop-blur-md shadow px-6 md:px-12 h-20 rounded-b-3xl border-b border-[#2d3440]">
-          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-blue-100 drop-shadow-sm whitespace-nowrap">Student OS</h1>
+          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-blue-100 drop-shadow-sm whitespace-nowrap">Overdue Dashboard</h1>
           <div className="flex items-center space-x-4 md:space-x-6">
             <input
               className="px-3 md:px-4 py-2 rounded-lg bg-[#181c24] text-blue-100 border border-[#2d3440] focus:outline-none focus:ring-2 focus:ring-blue-500 w-32 md:w-56"

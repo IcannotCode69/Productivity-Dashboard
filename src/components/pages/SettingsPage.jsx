@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+// Local-only settings example. Wire these to real theme/notification systems later.
 export default function SettingsPage() {
   const [theme, setTheme] = useState("dark");
   const [notifications, setNotifications] = useState(true);

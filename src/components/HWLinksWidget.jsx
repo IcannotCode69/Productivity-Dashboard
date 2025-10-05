@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 
+// Saved homework/study links widget. Stores a simple list in localStorage.
 const STORAGE_KEY = "hw-links";
 
 function getInitialLinks() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) return JSON.parse(saved);
+  // First-time defaults (feel free to customize)
   return [
     { name: "MATLAB", url: "https://matlab.mathworks.com/", icon: "https://matlab.mathworks.com/favicon.ico" },
     { name: "Pearson", url: "https://www.pearson.com/", icon: "https://www.pearson.com/etc/designs/pearson/favicon.ico" }
@@ -17,10 +19,12 @@ export default function HWLinksWidget() {
   const [url, setUrl] = useState("");
   const [icon, setIcon] = useState("");
 
+  // Persist whenever links change
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
   }, [links]);
 
+  // Add/remove operations
   function addLink(e) {
     e.preventDefault();
     if (!name.trim() || !url.trim()) return;

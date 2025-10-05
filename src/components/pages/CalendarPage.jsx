@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 
+// Default embed when nothing is configured.
+// The UI lets the user paste a Google account email and builds the embed URL.
 const DEFAULT_CALENDAR = "https://calendar.google.com/calendar/embed?src=en.indian%23holiday%40group.v.calendar.google.com&ctz=America%2FChicago&bgcolor=%23000000&color=%230B8043&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=1&showTz=0&mode=WEEK&height=600&hl=en&wkst=1&theme=dark&dark=1";
 
 export default function CalendarPage() {
   const [showInput, setShowInput] = useState(false);
   const [input, setInput] = useState("");
+  // Persist the selected calendar URL and an iframe key to force reloads
   const [calendarSrc, setCalendarSrc] = useState(() => {
     return localStorage.getItem("calendar-embed-link") || DEFAULT_CALENDAR;
   });

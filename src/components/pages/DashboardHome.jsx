@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
 import HWLinksWidget from "../HWLinksWidget";
 
+// react-grid-layout wrapper that auto-measures width
 const GridLayout = WidthProvider(RGL);
 
+// Minimal welcome widget. Additional widgets can follow the same pattern:
+// - A plain React component
+// - Registered in widgetTypes with sizing constraints
 function WelcomeWidget() {
   return (
     <div className="bg-gradient-to-br from-[#232a36]/90 to-[#1a1f2b]/90 backdrop-blur-md rounded-3xl shadow-xl border border-[#2d3440] p-8 w-full text-center mx-auto flex flex-col items-center justify-center min-h-[160px]">
@@ -16,6 +20,8 @@ function WelcomeWidget() {
   );
 }
 
+// Catalog of available widgets.
+// Each type defines: display name, component, and default/min grid sizes.
 const widgetTypes = {
   welcome: {
     name: "Welcome",
@@ -29,12 +35,15 @@ const widgetTypes = {
   }
 };
 
+// Default dashboard contents for first load
 const initialWidgets = [
   { key: "welcome-1", type: "welcome", x: 0, y: 0 },
   { key: "hwlinks-1", type: "hwlinks", x: 4, y: 0 }
 ];
 
 export default function DashboardHome() {
+  // Persist widgets and layout separately to localStorage so the dashboard
+  // keeps its shape across reloads.
   const [widgets, setWidgets] = useState(() => {
     const saved = localStorage.getItem("dashboard-widgets");
     if (saved) return JSON.parse(saved);
@@ -65,6 +74,7 @@ export default function DashboardHome() {
     setWidgets(ws => ws.filter(w => w.key !== key));
     setLayout(l => l.filter(item => item.i !== key));
   }
+  // Add a new widget of a given type at the bottom of the grid
   function addWidget(type) {
     const key = `${type}-${Date.now()}`;
     setWidgets(ws => [...ws, { key, type }]);
@@ -73,7 +83,7 @@ export default function DashboardHome() {
       {
         i: key,
         x: 0,
-        y: Infinity,
+        y: Infinity, // y=Infinity tells RGL to place it after existing items
         w: widgetTypes[type].w,
         h: widgetTypes[type].h,
         minW: widgetTypes[type].minW,
@@ -85,6 +95,12 @@ export default function DashboardHome() {
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-[#181c24] to-[#232a36] py-8 px-2" style={{ paddingTop: 96 }}>
       <div className="w-full mx-auto" style={{ maxWidth: 1600 }}>
+        {/*
+          Grid configuration:
+          - cols: 16 columns grid for fine-grained placement
+          - rowHeight: vertical unit size
+          - draggableHandle: only the handle allows dragging, avoids accidental drags
+        */}
         <GridLayout
           className="layout"
           layout={layout}
@@ -110,6 +126,7 @@ export default function DashboardHome() {
                 >
                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2.5"/><circle cx="12" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="12" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/></svg>
                 </div>
+                {/* Remove widget button */}
                 <button
                   className="absolute top-2 left-2 text-xs text-red-400 hover:text-red-600 bg-[#232a36] rounded-full px-2 py-0.5 shadow z-20"
                   onClick={() => removeWidget(w.key)}
@@ -122,6 +139,7 @@ export default function DashboardHome() {
             );
           })}
           {/* Add widget button */}
+          {/* Show an "Add Widget" tile for any widget type not currently on the dashboard */}
           {Object.keys(widgetTypes).filter(type => !widgets.some(w => w.type === type)).map(type => (
             <button
               key={type}

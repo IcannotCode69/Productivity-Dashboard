@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// Dumb UI component: expects tasks and setTasks from the parent.
 export default function TaskApp({ tasks, setTasks }) {
   const [input, setInput] = useState("");
 

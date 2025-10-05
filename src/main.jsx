@@ -1,3 +1,9 @@
+/*
+  App entry point:
+  - Imports global styles (Tailwind directives live in index.css)
+  - Renders the App component inside the #root element
+  - React.StrictMode enables extra checks in development
+*/
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/App.jsx";
@@ -10,14 +16,3 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 );
 
 
-// Test to ensure React and Tailwind are working
-
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-// import "./index.css";
-
-// ReactDOM.createRoot(document.getElementById("root")).render(
-//   <div className="min-h-screen flex items-center justify-center bg-mutedBg">
-//     <h1 className="text-3xl text-primary">✅ React & Tailwind are working!</h1>
-//   </div>
-// );

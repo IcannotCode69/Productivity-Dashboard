@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// Dumb UI component: expects notes and setNotes from the parent.
 export default function NoteApp({ notes, setNotes }) {
   const [input, setInput] = useState("");
 
